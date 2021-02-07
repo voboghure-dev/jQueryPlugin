@@ -1,31 +1,23 @@
 (function ($) {
     $.fn.myjquery = function () {
+    // $.fn.myjquery = function (options) {
+        // var settings = $.extend({
+        //         htmlTag: "li",
+        //     },
+        //     options
+        // );
+
         if (!window.hasOwnProperty("totalLi")) {
-            window.totalLi = this.parent().children().length;
-            window.delay = 1000;
+            // window.totalLi = this.parent().children(settings.htmlTag).length;
+            window.totalLi = this.parent().children("li").length;
+            // window.totalLi = this.parent().find("li").length;
+            window.delay = 100;
             console.log(totalLi);
         }
 
-        // console.log(this);
-        // var liCount = document.querySelectorAll("li").length
-        // console.log(liCount);
-        // var i = 0;
-
-        // Traverse through all li and shedule ajax request
-        // $("li").each(function (index) {
-        //     $(this).addClass("my-custom-class");
-
-        //     postID = index + 1;
-        //     setTimeout(fetchdata, delay, postID, this);
-        //     i++;
-        //     j = i % 5;
-        //     if ( j == 0 ) {
-        //         delay += 1000;
-        //     }
-        // });
-        // console.log(this);
-
         this.addClass("my-custom-class");
+        this.data("title", "test");
+
         var index = this.index() + 1;
 
         setTimeout(fetchdata, window.delay, index, this);
@@ -33,17 +25,20 @@
         // console.log(index);
         j = index % 5;
         if (j == 0) {
-            window.delay += 1000;
+            window.delay += 2000;
         }
 
         function fetchdata(index, li) {
             $.ajax("https://jsonplaceholder.typicode.com/posts/" + index, {
-                success: function (data, status, xhr) {
-                    // console.log(li);
+                success: function (data) {
                     $(li).text(data["title"]);
-                    // setTimeout(fetchdata, 2000, postID, li);
+                    $(li).data("title", data["title"]);
                 },
             });
         }
+
+        $(this).on('click', function() {
+            console.log($(this).data("title"));
+        });
     };
 })(jQuery);
